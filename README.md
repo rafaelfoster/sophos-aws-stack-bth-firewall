@@ -1,0 +1,1 @@
+# sophos-aws-stack-bth-firewall
