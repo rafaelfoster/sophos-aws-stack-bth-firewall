@@ -19,6 +19,14 @@
 -- Table structure for table `users`
 --
 
+CREATE DATABASE `erp`;
+
+GRANT ALL PRIVILEGES ON erp.* TO 'erp'@'localhost' IDENTIFIED BY 'passworderp';
+
+FLUSH PRIVILEGES;
+
+USE `erp`;
+
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
