@@ -203,7 +203,7 @@ template_malicous_url = """
 
                 <tr>
                   <td dir="ltr" style="padding:0px 0 0 0; font-size:18px; color: #66747e; line-height:24px; font-family: Calibri, Helvetica, sans-serif;   text-align: justify;text-justify: inter-word;">
-						<div style="font-size:14px;line-height:18px;color:#444"><a href="mailto:rafiana.rech@gruponzn.com" style="color:inherit;text-decoration:none" target="_blank">johnsmith@gmail.com</a> shared this file with you:</div>
+						<div style="font-size:14px;line-height:18px;color:#444"><a href="mailto:johnsmith@gmail.com" style="color:inherit;text-decoration:none" target="_blank">johnsmith@gmail.com</a> shared this file with you:</div>
 
 						<br>
 
