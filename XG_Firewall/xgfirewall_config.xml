@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?> <Configuration APIVersion="1800.2" IPS_CAT_VER="1">
+  <IPHost transactionid="">
+    <Name>IP_LAN_WinSRV2012</Name>
+    <IPFamily>IPv4</IPFamily>
+    <HostType>IP</HostType>
+    <IPAddress>10.1.20.50</IPAddress>
+  </IPHost>
+  <IPHost transactionid="">
+    <Name>IP_WAN_PortB</Name>
+    <IPFamily>IPv4</IPFamily>
+    <HostType>IP</HostType>
+    <IPAddress>10.1.10.10</IPAddress>
+  </IPHost>
+  <IPHost transactionid="">
+    <Name>IP_LAN_LNX_WebServer</Name>
+    <IPFamily>IPv4</IPFamily>
+    <HostType>IP</HostType>
+    <IPAddress>10.1.20.60</IPAddress>
+  </IPHost>
+  <FirewallRule transactionid="">
+    <Name>WAF-Linux_LAN_Web</Name>
+    <Description/>
+    <IPFamily>IPv4</IPFamily>
+    <Status>Enable</Status>
+    <Position>Top</Position>
+    <PolicyType>HTTPBased</PolicyType>
+    <HTTPBasedPolicy>
+      <HostedAddress>#PortB</HostedAddress>
+      <HTTPS>Disable</HTTPS>
+      <ListenPort>80</ListenPort>
+      <Domains>
+        <Domain>evilcorp.com</Domain>
+      </Domains>
+      <AccessPaths>
+	  <AccessPath>
+		<allowed_networks>Any IPv4</allowed_networks>
+		<auth_profile/>
+		<backend>Linux_WebServer</backend>
+		<be_path/>
+		<hot_standby>0</hot_standby>
+		<path>/</path>
+		<stickysession_status>0</stickysession_status>
+		<websocket_passthrough>0</websocket_passthrough>
+	  </AccessPath>
+		</AccessPaths>
+    <Exceptions>
+	</Exceptions>
+      <ProtocolSecurity>Block SQL Injection</ProtocolSecurity>
+      <CompressionSupport>Disable</CompressionSupport>
+      <RewriteHTML>0</RewriteHTML>
+      <PassHostHeader>Enable</PassHostHeader>
+      <RewriteCookies>Enable</RewriteCookies>
+      <IntrusionPrevention>None</IntrusionPrevention>
+      <TrafficShapingPolicy>None</TrafficShapingPolicy>
+      <Certificate/>
+      <RedirectHTTP>Disable</RedirectHTTP>
+    </HTTPBasedPolicy>
+  </FirewallRule>
+  <FirewallRule transactionid="">
+    <Name>WAF - Windows 2012 IIS</Name>
+    <Description/>
+    <IPFamily>IPv4</IPFamily>
+    <Status>Enable</Status>
+    <Position>After</Position>
+    <PolicyType>HTTPBased</PolicyType>
+    <After>
+      <Name>WAF - LNX Webserver</Name>
+    </After>
+    <HTTPBasedPolicy>
+      <HostedAddress>#PortB</HostedAddress>
+      <HTTPS>Disable</HTTPS>
+      <ListenPort>8080</ListenPort>
+      <Domains>
+        <Domain>windowstest.com.br</Domain>
+      </Domains>
+      <AccessPaths>
+  <AccessPath>
+    <allowed_networks>Any IPv4</allowed_networks>
+    <auth_profile/>
+    <backend>Win2012WebSRV</backend>
+    <be_path/>
+    <hot_standby>0</hot_standby>
+    <path>/</path>
+    <stickysession_status>0</stickysession_status>
+    <websocket_passthrough>0</websocket_passthrough>
+  </AccessPath> </AccessPaths>
+      <Exceptions> </Exceptions>
+      <ProtocolSecurity/>
+      <CompressionSupport>Disable</CompressionSupport>
+      <RewriteHTML>0</RewriteHTML>
+      <PassHostHeader>Enable</PassHostHeader>
+      <RewriteCookies>Enable</RewriteCookies>
+      <IntrusionPrevention>None</IntrusionPrevention>
+      <TrafficShapingPolicy>None</TrafficShapingPolicy>
+      <Certificate/>
+      <RedirectHTTP>Disable</RedirectHTTP>
+    </HTTPBasedPolicy>
+  </FirewallRule>
+  <FirewallRule transactionid="">
+    <Name>WAN -&gt; RDP WinSRV2012</Name>
+    <Description/>
+    <IPFamily>IPv4</IPFamily>
+    <Status>Enable</Status>
+    <Position>After</Position>
+    <PolicyType>Network</PolicyType>
+    <After>
+      <Name>WAF - Windows 2012 IIS</Name>
+    </After>
+    <NetworkPolicy>
+      <Action>Accept</Action>
+      <LogTraffic>Enable</LogTraffic>
+      <SkipLocalDestined>Disable</SkipLocalDestined>
+      <SourceZones>
+        <Zone>WAN</Zone>
+      </SourceZones>
+      <DestinationZones>
+        <Zone>LAN</Zone>
+      </DestinationZones>
+      <Schedule>All The Time</Schedule>
+      <Services>
+        <Service>RDP</Service>
+      </Services>
+      <DestinationNetworks>
+        <Network>IP_WAN_PortB</Network>
+      </DestinationNetworks>
+      <DSCPMarking>-1</DSCPMarking>
+      <WebFilter>None</WebFilter>
+      <WebCategoryBaseQoSPolicy> </WebCategoryBaseQoSPolicy>
+      <BlockQuickQuic>Disable</BlockQuickQuic>
+      <ScanVirus>Disable</ScanVirus>
+      <Sandstorm>Disable</Sandstorm>
+      <ProxyMode>Disable</ProxyMode>
+      <DecryptHTTPS>Disable</DecryptHTTPS>
+      <ApplicationControl>None</ApplicationControl>
+      <ApplicationBaseQoSPolicy> </ApplicationBaseQoSPolicy>
+      <IntrusionPrevention>None</IntrusionPrevention>
+      <TrafficShappingPolicy>None</TrafficShappingPolicy>
+      <ScanSMTP>Disable</ScanSMTP>
+      <ScanSMTPS>Disable</ScanSMTPS>
+      <ScanIMAP>Disable</ScanIMAP>
+      <ScanIMAPS>Disable</ScanIMAPS>
+      <ScanPOP3>Disable</ScanPOP3>
+      <ScanPOP3S>Disable</ScanPOP3S>
+      <ScanFTP>Disable</ScanFTP>
+      <SourceSecurityHeartbeat>Disable</SourceSecurityHeartbeat>
+      <MinimumSourceHBPermitted>No Restriction</MinimumSourceHBPermitted>
+      <DestSecurityHeartbeat>Disable</DestSecurityHeartbeat>
+      <MinimumDestinationHBPermitted>No Restriction</MinimumDestinationHBPermitted>
+    </NetworkPolicy>
+  </FirewallRule>
+  <FirewallRule transactionid="">
+    <Name>Servers -&gt; Internet WAN</Name>
+    <Description/>
+    <IPFamily>IPv4</IPFamily>
+    <Status>Enable</Status>
+    <Position>After</Position>
+    <PolicyType>Network</PolicyType>
+    <After>
+      <Name>WAN -&gt; RDP WinSRV2012</Name>
+    </After>
+    <NetworkPolicy>
+      <Action>Accept</Action>
+      <LogTraffic>Enable</LogTraffic>
+      <SkipLocalDestined>Disable</SkipLocalDestined>
+      <SourceZones>
+        <Zone>LAN</Zone>
+        <Zone>WAN</Zone>
+      </SourceZones>
+      <DestinationZones>
+        <Zone>WAN</Zone>
+      </DestinationZones>
+      <Schedule>All The Time</Schedule>
+      <DSCPMarking>-1</DSCPMarking>
+      <WebFilter>None</WebFilter>
+      <WebCategoryBaseQoSPolicy> </WebCategoryBaseQoSPolicy>
+      <BlockQuickQuic>Disable</BlockQuickQuic>
+      <ScanVirus>Disable</ScanVirus>
+      <Sandstorm>Disable</Sandstorm>
+      <ProxyMode>Disable</ProxyMode>
+      <DecryptHTTPS>Disable</DecryptHTTPS>
+      <ApplicationControl>None</ApplicationControl>
+      <ApplicationBaseQoSPolicy> </ApplicationBaseQoSPolicy>
+      <IntrusionPrevention>None</IntrusionPrevention>
+      <TrafficShappingPolicy>None</TrafficShappingPolicy>
+      <ScanSMTP>Disable</ScanSMTP>
+      <ScanSMTPS>Disable</ScanSMTPS>
+      <ScanIMAP>Disable</ScanIMAP>
+      <ScanIMAPS>Disable</ScanIMAPS>
+      <ScanPOP3>Disable</ScanPOP3>
+      <ScanPOP3S>Disable</ScanPOP3S>
+      <ScanFTP>Disable</ScanFTP>
+      <SourceSecurityHeartbeat>Disable</SourceSecurityHeartbeat>
+      <MinimumSourceHBPermitted>No Restriction</MinimumSourceHBPermitted>
+      <DestSecurityHeartbeat>Disable</DestSecurityHeartbeat>
+      <MinimumDestinationHBPermitted>No Restriction</MinimumDestinationHBPermitted>
+    </NetworkPolicy>
+  </FirewallRule>
+  <NATRule transactionid="">
+    <Name>NAT - FTP EvilCorp</Name>
+    <Description/>
+    <IPFamily>IPv4</IPFamily>
+    <Status>Enable</Status>
+    <Position>Top</Position>
+    <LinkedFirewallrule>None</LinkedFirewallrule>
+    <OriginalDestinationNetworks>
+      <Network>IP_WAN_PortB</Network>
+    </OriginalDestinationNetworks>
+    <TranslatedDestination>IP_LAN_WinSRV2012</TranslatedDestination>
+    <OriginalServices>
+      <Service>FTP</Service>
+    </OriginalServices>
+    <TranslatedService>Original</TranslatedService>
+    <OverrideInterfaceNATPolicy>Disable</OverrideInterfaceNATPolicy>
+    <TranslatedSource>Original</TranslatedSource>
+    <NATMethod>0</NATMethod>
+    <HealthCheck>Disable</HealthCheck>
+  </NATRule>
+  <NATRule transactionid="">
+    <Name>NAT_RDP_Win2012</Name>
+    <Description/>
+    <IPFamily>IPv4</IPFamily>
+    <Status>Enable</Status>
+    <Position>After</Position>
+    <LinkedFirewallrule>None</LinkedFirewallrule>
+    <TranslatedDestination>IP_LAN_WinSRV2012</TranslatedDestination>
+    <OriginalServices>
+      <Service>RDP</Service>
+    </OriginalServices>
+    <TranslatedService>Original</TranslatedService>
+    <InboundInterfaces>
+      <Interface>PortB</Interface>
+    </InboundInterfaces>
+    <OverrideInterfaceNATPolicy>Disable</OverrideInterfaceNATPolicy>
+    <After>
+      <Name>NAT - FTP EvilCorp</Name>
+    </After>
+    <TranslatedSource>MASQ</TranslatedSource>
+    <NATMethod>0</NATMethod>
+    <HealthCheck>Disable</HealthCheck>
+  </NATRule>
+  <NATRule transactionid="">
+    <Name>Default SNAT IPv4</Name>
+    <Description>Auto created IPv4 SNAT MASQ rule for traffic from "ANY" inbound interface to WAN outbound interface. Updated automatically with WAN interface changes.</Description>
+    <IPFamily>IPv4</IPFamily>
+    <Status>Enable</Status>
+    <Position>After</Position>
+    <LinkedFirewallrule>None</LinkedFirewallrule>
+    <TranslatedDestination>Original</TranslatedDestination>
+    <TranslatedService>Original</TranslatedService>
+    <OutboundInterfaces>
+      <Interface>PortB</Interface>
+    </OutboundInterfaces>
+    <OverrideInterfaceNATPolicy>Disable</OverrideInterfaceNATPolicy>
+    <After>
+      <Name>NAT_RDP_Win2012</Name>
+    </After>
+    <TranslatedSource>MASQ</TranslatedSource>
+  </NATRule> 
+</Configuration>
