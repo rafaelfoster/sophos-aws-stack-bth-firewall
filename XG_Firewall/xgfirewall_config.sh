@@ -1,0 +1,26 @@
+#!/usr/bin/expect -f
+spawn ssh 10.1.20.10 -l admin
+expect "Are you sure you want to continue connecting"
+send "yes\r"
+expect "password:"
+send "{DEFAULTPASSWORD}\r"
+send -- " \r"
+expect "Select Menu Number"
+send "5\r"
+expect "Select Menu Number"
+send "3\r"
+expect "Sophos Firewall"
+puts $expect_out(buffer)
+expect "SF01V_AI01_SFOS"
+send "curl https://raw.githubusercontent.com/rafaelfoster/sophos-aws-stack-bth-firewall/main/XG_Firewall/xgfirewall_config.xml > /tmp/xgfirewall_config.xml\r"
+send "cd /tmp\r"
+send "mv xgfirewall_config.xml Entities.xml\r"
+send "tar c -f XGFirewallConfigs.tar Entities.xml\r"
+send "sleep 3\r"
+send "/bin/opcode upload_text_import_file  -s nosync -t json -b '{\"importfile\":\"/tmp/XGFirewallConfigs.tar\",\"importtype\":2,\"mode\":727}'\r"
+send "exit\r"
+expect "Select Menu Number"
+send "0\r"
+expect "Select Menu Number"
+send "0\r"
+exit
