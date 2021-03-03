@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?> <Configuration APIVersion="1800.2" IPS_CAT_VER="1">
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration APIVersion="1800.2" IPS_CAT_VER="1">
   <IPHost transactionid="">
     <Name>IP_LAN_WinSRV2012</Name>
     <IPFamily>IPv4</IPFamily>
@@ -17,8 +18,18 @@
     <HostType>IP</HostType>
     <IPAddress>10.1.20.60</IPAddress>
   </IPHost>
-  <FirewallRule transactionid="">
-    <Name>WAF-Linux_LAN_Web</Name>
+ <RealServers transactionid="">
+    <Name>Linux_LAN_WebServer</Name>
+    <Description/>
+    <Host>IP_LAN_LNX_WebServer</Host>
+    <Type>Plaintext (HTTP)</Type>
+    <Port>80</Port>
+    <KeepAlive>Enable</KeepAlive>
+    <DisableReuse>Disable</DisableReuse>
+    <TimeOut>300</TimeOut>
+  </RealServers>
+   <FirewallRule transactionid="">
+    <Name>WAF - LNX Webserver</Name>
     <Description/>
     <IPFamily>IPv4</IPFamily>
     <Status>Enable</Status>
@@ -30,61 +41,22 @@
       <ListenPort>80</ListenPort>
       <Domains>
         <Domain>evilcorp.com</Domain>
+        <Domain>www.evilcorp.com</Domain>
       </Domains>
       <AccessPaths>
-	  <AccessPath>
-		<allowed_networks>Any IPv4</allowed_networks>
-		<auth_profile/>
-		<backend>Linux_WebServer</backend>
-		<be_path/>
-		<hot_standby>0</hot_standby>
-		<path>/</path>
-		<stickysession_status>0</stickysession_status>
-		<websocket_passthrough>0</websocket_passthrough>
-	  </AccessPath>
-		</AccessPaths>
-    <Exceptions>
-	</Exceptions>
-      <ProtocolSecurity>Block SQL Injection</ProtocolSecurity>
-      <CompressionSupport>Disable</CompressionSupport>
-      <RewriteHTML>0</RewriteHTML>
-      <PassHostHeader>Enable</PassHostHeader>
-      <RewriteCookies>Enable</RewriteCookies>
-      <IntrusionPrevention>None</IntrusionPrevention>
-      <TrafficShapingPolicy>None</TrafficShapingPolicy>
-      <Certificate/>
-      <RedirectHTTP>Disable</RedirectHTTP>
-    </HTTPBasedPolicy>
-  </FirewallRule>
-  <FirewallRule transactionid="">
-    <Name>WAF - Windows 2012 IIS</Name>
-    <Description/>
-    <IPFamily>IPv4</IPFamily>
-    <Status>Enable</Status>
-    <Position>After</Position>
-    <PolicyType>HTTPBased</PolicyType>
-    <After>
-      <Name>WAF - LNX Webserver</Name>
-    </After>
-    <HTTPBasedPolicy>
-      <HostedAddress>#PortB</HostedAddress>
-      <HTTPS>Disable</HTTPS>
-      <ListenPort>8080</ListenPort>
-      <Domains>
-        <Domain>windowstest.com.br</Domain>
-      </Domains>
-      <AccessPaths>
-  <AccessPath>
-    <allowed_networks>Any IPv4</allowed_networks>
-    <auth_profile/>
-    <backend>Win2012WebSRV</backend>
-    <be_path/>
-    <hot_standby>0</hot_standby>
-    <path>/</path>
-    <stickysession_status>0</stickysession_status>
-    <websocket_passthrough>0</websocket_passthrough>
-  </AccessPath> </AccessPaths>
-      <Exceptions> </Exceptions>
+		  <AccessPath>
+			<allowed_networks>Any IPv4</allowed_networks>
+			<auth_profile/>
+			<backend>Linux_LAN_WebServer</backend>
+			<be_path/>
+			<hot_standby>0</hot_standby>
+			<path>/</path>
+			<stickysession_status>0</stickysession_status>
+			<websocket_passthrough>0</websocket_passthrough>
+		  </AccessPath>
+	  </AccessPaths>
+      <Exceptions>
+	  </Exceptions>
       <ProtocolSecurity/>
       <CompressionSupport>Disable</CompressionSupport>
       <RewriteHTML>0</RewriteHTML>
@@ -92,8 +64,6 @@
       <RewriteCookies>Enable</RewriteCookies>
       <IntrusionPrevention>None</IntrusionPrevention>
       <TrafficShapingPolicy>None</TrafficShapingPolicy>
-      <Certificate/>
-      <RedirectHTTP>Disable</RedirectHTTP>
     </HTTPBasedPolicy>
   </FirewallRule>
   <FirewallRule transactionid="">
@@ -104,7 +74,7 @@
     <Position>After</Position>
     <PolicyType>Network</PolicyType>
     <After>
-      <Name>WAF - Windows 2012 IIS</Name>
+      <Name>WAF - LNX Webserver</Name>
     </After>
     <NetworkPolicy>
       <Action>Accept</Action>
@@ -238,22 +208,4 @@
     <NATMethod>0</NATMethod>
     <HealthCheck>Disable</HealthCheck>
   </NATRule>
-  <NATRule transactionid="">
-    <Name>Default SNAT IPv4</Name>
-    <Description>Auto created IPv4 SNAT MASQ rule for traffic from "ANY" inbound interface to WAN outbound interface. Updated automatically with WAN interface changes.</Description>
-    <IPFamily>IPv4</IPFamily>
-    <Status>Enable</Status>
-    <Position>After</Position>
-    <LinkedFirewallrule>None</LinkedFirewallrule>
-    <TranslatedDestination>Original</TranslatedDestination>
-    <TranslatedService>Original</TranslatedService>
-    <OutboundInterfaces>
-      <Interface>PortB</Interface>
-    </OutboundInterfaces>
-    <OverrideInterfaceNATPolicy>Disable</OverrideInterfaceNATPolicy>
-    <After>
-      <Name>NAT_RDP_Win2012</Name>
-    </After>
-    <TranslatedSource>MASQ</TranslatedSource>
-  </NATRule> 
 </Configuration>
