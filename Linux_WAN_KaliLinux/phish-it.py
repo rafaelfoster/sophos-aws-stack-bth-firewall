@@ -15,8 +15,8 @@ from email.mime.text import MIMEText
 victim_addr = ""
 
 custom_fig = Figlet(font='alligator2')
-print(custom_fig.renderText('Send'))
-print(custom_fig.renderText('Mail'))
+print(custom_fig.renderText('Phish'))
+print(custom_fig.renderText('it'))
 
 time.sleep(1)
 
